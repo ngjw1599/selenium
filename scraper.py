@@ -35,12 +35,15 @@ time.sleep(5)
 #click on the second row, first one
 
 # create table data 
-table_result = driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]/href]")
-print(table_result)
 
-# for row in range(1,12):
-#     rows = table_result.find_elements(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[2]/div[1]")
 
+#item 1
+driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
+
+time.sleep(5)
+title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
+description = driver.find_element(By.CLASS_NAME, "._2jrvqA").text
+price = driver.find_element(By.CLASS_NAME, "._2Shl1j").text
 
 #load
 # get title
@@ -61,10 +64,13 @@ print(table_result)
     
 
 
-#
+#dictionaries
+data = {'Title': [], 'Description':[], 'Price':[]}
 
 
 #closes the browser once done
 driver.close()
+
+
 
 print("test case done successfully")
