@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys  
 import time
 import pandas as pd
+from csv import DictWriter
 import csv
 
 
@@ -23,7 +24,7 @@ time.sleep(5)
 search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("Sports Bra")
 
 #load
-time.sleep(2)
+time.sleep(5)
 
 #click on search
 driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
@@ -42,9 +43,11 @@ time.sleep(5)
 driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
 
 time.sleep(5)
+
 title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
-description = driver.find_element(By.CLASS_NAME, "._2jrvqA").text
-price = driver.find_element(By.CLASS_NAME, "._2Shl1j").text
+#get the text description that contains the word "Bra"
+description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
+price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
 sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
 
 #convert sales in text to number
@@ -68,18 +71,19 @@ list_of_info = []
 #input dictionary
 dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
 
+#test post values below
+# for value in dict_data.values():
+#     print(value)
+
 #append dictionary into list
 list_of_info.append(dict_data)
 
-#convert into csv
+#convert into csv, replaces the old one
 with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
-    writer = csv.writer(convert)
-    #write headers
-    writer.writerow(column_names)
-    #write all info according to headers
-    writer.writerow(list_of_info)
-
-
+    dw = csv.DictWriter(convert, delimiter=',', fieldnames=column_names)
+    dw.writeheader()
+    for info in list_of_info:
+        dw.writerow(info)
 
 #there has to be another way to deal with this lol, like a looping through but i am unable to get the link data using XPATH :(
 
@@ -100,9 +104,6 @@ with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
     # 2 star
     # 1 star
     
-
-
-
 #closes the browser once done
 driver.close()
 
