@@ -1,3 +1,4 @@
+from dataclasses import replace
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
@@ -44,6 +45,43 @@ time.sleep(5)
 title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
 description = driver.find_element(By.CLASS_NAME, "._2jrvqA").text
 price = driver.find_element(By.CLASS_NAME, "._2Shl1j").text
+sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
+
+#convert sales in text to number
+def sales_to_value(sales):
+    if type(sales) == float or type(sales) == int:
+        return sales
+    if 'k' in sales:
+        if len(sales)>1:
+            sales = float(sales.replace("k", '') )* 1000
+            return sales
+    else:
+        return float(sales)
+    
+    
+# putting the data into a csv format
+# create headers
+column_names = ["Type", "Title", "Description", "Price", "Sales"]
+#create list 
+list_of_info = []
+
+#input dictionary
+dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
+
+#append dictionary into list
+list_of_info.append(dict_data)
+
+#convert into csv
+with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
+    writer = csv.writer(convert)
+    #write headers
+    writer.writerow(column_names)
+    #write all info according to headers
+    writer.writerow(list_of_info)
+
+
+
+#there has to be another way to deal with this lol, like a looping through but i am unable to get the link data using XPATH :(
 
 #load
 # get title
@@ -64,13 +102,9 @@ price = driver.find_element(By.CLASS_NAME, "._2Shl1j").text
     
 
 
-#dictionaries
-data = {'Title': [], 'Description':[], 'Price':[]}
-
 
 #closes the browser once done
 driver.close()
 
-
-
+#print message once output is done
 print("test case done successfully")
