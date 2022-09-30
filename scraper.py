@@ -26,6 +26,13 @@ search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input
 #load
 time.sleep(5)
 
+# putting the data into a csv format
+# create headers
+column_names = ["Type", "Title", "Description", "Price", "Sales"]
+#create list 
+list_of_info = []
+
+
 #click on search
 driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
 
@@ -35,20 +42,6 @@ time.sleep(5)
 #we can for loop later but first manual test each one
 # class ="row shopee-search-item-result__items"
 #click on the second row, first one
-
-# create table data 
-
-
-#item 1
-driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
-
-time.sleep(5)
-
-title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
-#get the text description that contains the word "Bra"
-description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
-price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
-sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
 
 #convert sales in text to number
 def sales_to_value(sales):
@@ -60,23 +53,50 @@ def sales_to_value(sales):
             return sales
     else:
         return float(sales)
-    
-    
-# putting the data into a csv format
-# create headers
-column_names = ["Type", "Title", "Description", "Price", "Sales"]
-#create list 
-list_of_info = []
+
+driver.maximize_window()
+
+#item 1-4, div 6-9
+for div_item in range(6,10):
+    item=str(div_item)
+    time.sleep(10)
+    driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
+    time.sleep(5)
+    title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
+    #get the text description that contains the word "Bra"
+    description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
+    price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
+    sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
+    #input dictionary
+    dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
+    list_of_info.append(dict_data)
+
+    #return to the previous page
+    driver.back()
+
+#item 1
+#driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
+
+
+#time.sleep(5)
+
+# title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
+# #get the text description that contains the word "Bra"
+# description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
+# price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
+# sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
+
+
 
 #input dictionary
-dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
+#dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
 
 #test post values below
 # for value in dict_data.values():
 #     print(value)
 
 #append dictionary into list
-list_of_info.append(dict_data)
+#list_of_info.append(dict_data)
 
 #convert into csv, replaces the old one
 with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
