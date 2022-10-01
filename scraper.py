@@ -7,6 +7,7 @@ import time
 import pandas as pd
 from csv import DictWriter
 import csv
+import re
 
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -28,7 +29,7 @@ time.sleep(5)
 
 # putting the data into a csv format
 # create headers
-column_names = ["Type", "Title", "Description", "Price", "Sales"]
+column_names = ["Type", "Title", "Description", "Price", "Sales", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"]
 #create list 
 list_of_info = []
 
@@ -55,20 +56,52 @@ def sales_to_value(sales):
         return float(sales)
 
 driver.maximize_window()
-
 #item 1-4, div 6-9
 for div_item in range(6,10):
     item=str(div_item)
-    time.sleep(10)
+    time.sleep(5)
     driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
     time.sleep(5)
     title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
     #get the text description that contains the word "Bra"
-    description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
+    description = driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div/p" ).get_attribute("textContent")
     price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
     sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
+
+    driver.refresh()
+    time.sleep(2)
+    #rating
+    rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
+
+    #get number of stars
+    five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text
+    #five = re.findall(r"\[((A-Za-z0-9_)+)\]", five_stars)
+    
+    four_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[3]').text
+    #four = re.findall(r'\(.*?\')', four_stars)
+
+    three_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[4]').text
+    #three = re.findall(r'\(.*?\')', three_stars)
+
+    two_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[5]').text
+    #two = re.findall(r'\(.*?\')', two_stars)
+
+    one_star = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[6]').text
+    #one = re.findall(r'\(.*?\')', one_star)
+
+
     #input dictionary
-    dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
+    dict_data = {"Type": "Sports Bra", 
+                "Title": title, 
+                "Description": description, 
+                "Price": sales_to_value(sales), 
+                "5 Stars": five_stars, 
+                "4 Stars": four_stars,
+                "3 Stars": three_stars,
+                "2 Stars": two_stars,
+                "1 Star": one_star}
+
+    # add into original list for csv
     list_of_info.append(dict_data)
 
     #return to the previous page
