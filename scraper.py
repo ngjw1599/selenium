@@ -29,7 +29,7 @@ time.sleep(5)
 
 # putting the data into a csv format
 # create headers
-column_names = ["Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"]
+column_names = ["Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Stars", "0 Stars"]
 #create list 
 list_of_info = []
 
@@ -61,27 +61,43 @@ for div_item in range(6,10):
     item=str(div_item)
     time.sleep(5)
     driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
+
+    # webpage doesnt load all elements, thus need to refresh
     driver.refresh()
     time.sleep(5)
+
+    # retrieve all required information
     title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
-    #get the text description that contains the word "Bra"
-    #testing
     description = driver.find_element(By.XPATH, "//p[@class='_2jrvqA']").get_attribute('textContent')
-    #description = driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[1]/div[2]/div[2]/div/p" ).get_attribute("textContent")
     price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
     sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
 
+    # webpage doesnt load all elements, thus need to refresh
     driver.refresh()
     time.sleep(5)
+
     #rating
     rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
 
+    #input dictionary
+    dict_data = {"Type": "Sports Bra", 
+                "Title": title, 
+                "Description": description, 
+                "Price": price,
+                "Sales": sales_to_value(sales), 
+                "Rating" : rating
+                }
+
     #get number of stars
     #stars
+
     stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
-    liststars = []
+    dict_stars = {}
     for i in range(len(stars)):
-        liststars.append(stars[i].text)
+        #print(stars[i].text)
+        dict_stars["{0} Stars".format(i)] = re.findall('\(.*?\)', (stars[i].text)[0])
+
+    #dict_data.update(dict_stars)
     # five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text
     # #five = re.findall(r"\[((A-Za-z0-9_)+)\]", five_stars)
     
@@ -97,21 +113,6 @@ for div_item in range(6,10):
     # one_star = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[6]').text
     # #one = re.findall(r'\(.*?\')', one_star)
 
-
-    #input dictionary
-    dict_data = {"Type": "Sports Bra", 
-                "Title": title, 
-                "Description": description, 
-                "Price": price,
-                "Sales": sales_to_value(sales), 
-                "Rating" : rating,
-                "Stars" : liststars
-                # "5 Stars": five_stars, 
-                # "4 Stars": four_stars,
-                # "3 Stars": three_stars,
-                # "2 Stars": two_stars,
-                # "1 Star": one_star
-                }
 
     # add into original list for csv
     list_of_info.append(dict_data)
