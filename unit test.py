@@ -1,20 +1,18 @@
-#organising the test case
-import unittest
-
-#importing the web driver that we will be using ie:chrome to conduct webscraping
+from dataclasses import replace
 from selenium import webdriver
-#keys class on the keyboard
-from selenium.webdriver.common.keys import Keys
-#by class used to locate elements within the document
-from selenium.webdriver.common.by import By
-
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys  
+import time
+import pandas as pd
+from csv import DictWriter
+import csv
+import re
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
 print("test case started")
 
-driver = webdriver.Chrome()  
 #driver=webdriver.firefox()  
 #driver=webdriver.ie()  
 #maximize the window size  
@@ -27,7 +25,33 @@ driver.get("https://shopee.sg/")
 # #click on the Google search button  
 # driver.find_element_by_name("btnK").send_keys(Keys.ENTER)  
 # time.sleep(3)  
-# #close the browser  
+# #close the browser 
+
+# closes the popup first
+driver.find_element(By.XPATH, "//html").click();
+
+#load
+time.sleep(5)
+
+
+search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("sports bra")
+
+driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+
+#load
+time.sleep(5)
+
+driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
+driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
+
+time.sleep(1)
+
+driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("yoga pants")
+
+driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+
+time.sleep(5)
+
 driver.close()  
 print("sample test case successfully completed")  
 

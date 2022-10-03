@@ -21,104 +21,119 @@ driver.find_element(By.XPATH, "//html").click();
 #load
 time.sleep(5)
 
-#find element by class "shopee-searchbar-input", input "sports bra" to search
-search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("Sports Bra")
+product_type = {'Fitness Wear': ["Sports Bra", "Yoga Pants"],
+                'Resistance Bands' : ["Hip Bands", "Multi Resistance Bands"],
+                'Skipping Rope': ["Skipping Rope", "Digital Skipping Rope"]}
 
-#load
-time.sleep(5)
+for main_type in product_type:
+    #print(main_type)
+    for item in product_type[main_type]:
+        #print(item)
 
-# putting the data into a csv format
-# create headers
-column_names = ["Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Stars", "0 Stars"]
-#create list 
-list_of_info = []
+        #find element by class "shopee-searchbar-input", input to search
+        search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(item)
 
+        #load
+        time.sleep(5)
 
-#click on search
-driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
-
-#load
-time.sleep(5)
-
-#we can for loop later but first manual test each one
-# class ="row shopee-search-item-result__items"
-#click on the second row, first one
-
-#convert sales in text to number
-def sales_to_value(sales):
-    if type(sales) == float or type(sales) == int:
-        return sales
-    if 'k' in sales:
-        if len(sales)>1:
-            sales = float(sales.replace("k", '') )* 1000
-            return sales
-    else:
-        return float(sales)
-
-driver.maximize_window()
-#item 1-4, div 6-9
-for div_item in range(6,10):
-    item=str(div_item)
-    time.sleep(5)
-    driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
-
-    # webpage doesnt load all elements, thus need to refresh
-    driver.refresh()
-    time.sleep(5)
-
-    # retrieve all required information
-    title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
-    description = driver.find_element(By.XPATH, "//p[@class='_2jrvqA']").get_attribute('textContent')
-    price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
-    sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
-
-    # webpage doesnt load all elements, thus need to refresh
-    driver.refresh()
-    time.sleep(5)
-
-    #rating
-    rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
-
-    #input dictionary
-    dict_data = {"Type": "Sports Bra", 
-                "Title": title, 
-                "Description": description, 
-                "Price": price,
-                "Sales": sales_to_value(sales), 
-                "Rating" : rating
-                }
-
-    #get number of stars
-    #stars
-
-    stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
-    dict_stars = {}
-    for i in range(len(stars)):
-        #print(stars[i].text)
-        dict_stars["{0} Stars".format(i)] = re.findall('\(.*?\)', (stars[i].text)[0])
-
-    #dict_data.update(dict_stars)
-    # five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text
-    # #five = re.findall(r"\[((A-Za-z0-9_)+)\]", five_stars)
-    
-    # four_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[3]').text
-    # #four = re.findall(r'\(.*?\')', four_stars)
-
-    # three_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[4]').text
-    # #three = re.findall(r'\(.*?\')', three_stars)
-
-    # two_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[5]').text
-    # #two = re.findall(r'\(.*?\')', two_stars)
-
-    # one_star = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[6]').text
-    # #one = re.findall(r'\(.*?\')', one_star)
+        # putting the data into a csv format
+        # create headers
+        column_names = ["Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Stars", "0 Stars"]
+        #create list 
+        list_of_info = []
 
 
-    # add into original list for csv
-    list_of_info.append(dict_data)
+        #click on search
+        driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
 
-    #return to the previous page
-    driver.back()
+        #load
+        time.sleep(5)
+
+        #we can for loop later but first manual test each one   
+        # class ="row shopee-search-item-result__items"
+        #click on the second row, first one
+
+        #convert sales in text to number
+        def sales_to_value(sales):
+            if type(sales) == float or type(sales) == int:
+                return sales
+            if 'k' in sales:
+                if len(sales)>1:
+                    sales = float(sales.replace("k", '') )* 1000
+                    return sales
+            else:
+                return float(sales)
+
+        driver.maximize_window()
+        #item 1-4, div 6-9
+        for div_item in range(6,10):
+            item=str(div_item)
+            time.sleep(5)
+            driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
+
+            # webpage doesnt load all elements, thus need to refresh
+            driver.refresh()
+            time.sleep(5)
+
+            # retrieve all required information
+            title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
+            description = driver.find_element(By.XPATH, "//p[@class='_2jrvqA']").get_attribute('textContent')
+            price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
+            sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
+
+            # webpage doesnt load all elements, thus need to refresh
+            driver.refresh()
+            time.sleep(5)
+
+            #rating
+            rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
+
+            #input dictionary
+            dict_data = {
+                        "Category": main_type,
+                        "Type": item, 
+                        "Title": title, 
+                        "Description": description, 
+                        "Price": price,
+                        "Sales": sales_to_value(sales), 
+                        "Rating" : rating
+                        }
+
+            #get number of stars
+            #stars
+
+            stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
+            dict_stars = {}
+            for i in range(len(stars)):
+                for z in range(1,6):
+                    #print(stars[i].text)
+                    dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
+
+            #dict_data.update(dict_stars)
+            # five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text
+            # #five = re.findall(r"\[((A-Za-z0-9_)+)\]", five_stars)
+            
+            # four_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[3]').text
+            # #four = re.findall(r'\(.*?\')', four_stars)
+
+            # three_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[4]').text
+            # #three = re.findall(r'\(.*?\')', three_stars)
+
+            # two_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[5]').text
+            # #two = re.findall(r'\(.*?\')', two_stars)
+
+            # one_star = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[6]').text
+            # #one = re.findall(r'\(.*?\')', one_star)
+
+
+            # add into original list for csv
+            list_of_info.append(dict_data)
+
+            #return to the previous page
+            driver.back()
+        # clear input and go to next item
+        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").clear()
+        
 
 #item 1
 #driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
