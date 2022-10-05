@@ -2,7 +2,8 @@ from dataclasses import replace
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys  
+from selenium.webdriver.common.keys import Keys 
+from selenium.webdriver.common.action_chains import ActionChains 
 import time
 import pandas as pd
 from csv import DictWriter
@@ -13,10 +14,11 @@ import re
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
 #open shopee website
-driver.get("https://shopee.sg/")
+driver.get("https://shopee.sg/m/new-user-zone")
 
 # closes the popup first
 driver.find_element(By.XPATH, "//html").click();
+
 
 #load
 time.sleep(5)
@@ -108,6 +110,11 @@ for main_type in product_type:
                 for z in range(1,6):
                     #print(stars[i].text)
                     dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
+            
+            #get all reviews
+            # need to loop through all pages, currently only able to loop through one post
+            reviews = driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[3]").get_attribute("textContent")
+            print(reviews)
 
             #dict_data.update(dict_stars)
             # five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text

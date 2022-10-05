@@ -30,27 +30,29 @@ driver.get("https://shopee.sg/")
 # closes the popup first
 driver.find_element(By.XPATH, "//html").click();
 
-#load
-time.sleep(5)
-
-
-search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("sports bra")
-
-driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.HOME)
 
 #load
 time.sleep(5)
 
-driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
-driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
 
-time.sleep(1)
+# search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("sports bra")
 
-driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("yoga pants")
+# driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
 
-driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+# load
+# time.sleep(5)
 
-time.sleep(5)
+# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
+# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
+
+# time.sleep(1)
+
+# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("yoga pants")
+
+# driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+
+# time.sleep(5)
 
 driver.close()  
 print("sample test case successfully completed")  
