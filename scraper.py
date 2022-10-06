@@ -24,8 +24,8 @@ driver.find_element(By.XPATH, "//html").click();
 time.sleep(5)
 
 product_type = {'Fitness Wear': ["Sports Bra", "Yoga Pants"],
-                'Resistance Bands' : ["Hip Bands", "Multi Resistance Bands"],
-                'Skipping Rope': ["Skipping Rope", "Digital Skipping Rope"]}
+                'Resistance Bands' : ["Fabric Resistance Bands", "Resistance Bands"],
+                'Skipping Rope': ["Skipping Rope"]}
 
 for main_type in product_type:
     #print(main_type)
@@ -40,7 +40,7 @@ for main_type in product_type:
 
         # putting the data into a csv format
         # create headers
-        column_names = ["Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Stars", "0 Stars"]
+        column_names = ["Category", "Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "Reviews"]
         #create list 
         list_of_info = []
 
@@ -86,9 +86,12 @@ for main_type in product_type:
             # webpage doesnt load all elements, thus need to refresh
             driver.refresh()
             time.sleep(5)
+            driver.refresh()
+            time.sleep(5)
 
             #rating
             rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
+            reviews = driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent")
 
             #input dictionary
             dict_data = {
@@ -98,40 +101,23 @@ for main_type in product_type:
                         "Description": description, 
                         "Price": price,
                         "Sales": sales_to_value(sales), 
-                        "Rating" : rating
+                        "Rating" : rating,
+                        "Reviews" : reviews
                         }
+
 
             #get number of stars
             #stars
 
-            stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
-            dict_stars = {}
-            for i in range(len(stars)):
-                for z in range(1,6):
-                    #print(stars[i].text)
-                    dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
+            # stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
+            # dict_stars = {}
+            # for i in range(len(stars)):
+            #     for z in range(1,6):
+            #         #print(stars[i].text)
+            #         dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
             
             #get all reviews
             # need to loop through all pages, currently only able to loop through one post
-            reviews = driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[3]").get_attribute("textContent")
-            print(reviews)
-
-            #dict_data.update(dict_stars)
-            # five_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[2]').text
-            # #five = re.findall(r"\[((A-Za-z0-9_)+)\]", five_stars)
-            
-            # four_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[3]').text
-            # #four = re.findall(r'\(.*?\')', four_stars)
-
-            # three_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[4]').text
-            # #three = re.findall(r'\(.*?\')', three_stars)
-
-            # two_stars = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[5]').text
-            # #two = re.findall(r'\(.*?\')', two_stars)
-
-            # one_star = driver.find_element(By.XPATH, '//*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div[6]').text
-            # #one = re.findall(r'\(.*?\')', one_star)
-
 
             # add into original list for csv
             list_of_info.append(dict_data)
@@ -139,32 +125,9 @@ for main_type in product_type:
             #return to the previous page
             driver.back()
         # clear input and go to next item
-        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").clear()
-        
-
-#item 1
-#driver.find_element(By.XPATH, "//body/div[@id='main']/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[6]/a[1]/div[1]/div[1]").click()
-
-
-#time.sleep(5)
-
-# title = driver.find_element(By.CLASS_NAME, "_2rQP1z").text
-# #get the text description that contains the word "Bra"
-# description = driver.find_element(By.XPATH, "//p[contains(text(),'Bra')]" or "//p[contains(text(),'bra')]" ).get_attribute("textContent")
-# price = driver.find_element(By.CLASS_NAME, "_2Shl1j").text
-# sales = driver.find_element(By.CLASS_NAME, "HmRxgn").text
-
-
-
-#input dictionary
-#dict_data = {"Type": "Sports Bra", "Title": title, "Description": description, "Price": sales_to_value(sales)}
-
-#test post values below
-# for value in dict_data.values():
-#     print(value)
-
-#append dictionary into list
-#list_of_info.append(dict_data)
+        driver.refresh()
+        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
+        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
 
 #convert into csv, replaces the old one
 with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
@@ -173,24 +136,6 @@ with open('scraping.csv', 'w', encoding='UTF8', newline='') as convert:
     for info in list_of_info:
         dw.writerow(info)
 
-#there has to be another way to deal with this lol, like a looping through but i am unable to get the link data using XPATH :(
-
-#load
-# get title
-# type; class below
-# title: "_2rQP1z" 
-# Description: ""._2jrvqA"
-# Price: "._2Shl1j"
-# Sales: "HmRxgn" : however this is in text format and not number, need to convert
-# Ratings/Reviews
-    #split into different groups: overall rating: ".product-rating-overview__rating-score"
-    # X stars: class="product-rating-overview__filter"; it is in a list format
-    # 5 star 
-        # comment
-    # 4 star
-    # 3 star
-    # 2 star
-    # 1 star
     
 #closes the browser once done
 driver.close()

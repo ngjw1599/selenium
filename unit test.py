@@ -18,7 +18,7 @@ print("test case started")
 #maximize the window size  
 driver.maximize_window()  
 #navigate to the url  
-driver.get("https://shopee.sg/")  
+driver.get("https://shopee.sg/m/new-user-zone")  
 #identify the Google search text box and enter the value  
 # driver.find_element_by_name("q").send_keys("javatpoint")  
 # time.sleep(3)  
@@ -36,23 +36,36 @@ driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.HOME)
 time.sleep(5)
 
 
-# search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("sports bra")
+product_type = {'Fitness Wear': ["Sports Bra", "Yoga Pants"],
+                'Resistance Bands' : ["Fabric Resistance Bands", "Resistance Bands"],
+                'Skipping Rope': ["Skipping Rope"]}
 
-# driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
 
-# load
-# time.sleep(5)
+for main_type in product_type:
+    #print(main_type)
+    for item in product_type[main_type]:
+        #print(item)
 
-# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
-# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
+        #find element by class "shopee-searchbar-input", input to search
+        search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(item)
 
-# time.sleep(1)
+#search_input = driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("sports bra")
 
-# driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("yoga pants")
+        driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
 
-# driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+#load
+        time.sleep(5)
 
-# time.sleep(5)
+        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.CONTROL,"a")
+        driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys(Keys.DELETE)
+
+        # time.sleep(1)
+
+        # driver.find_element(By.CLASS_NAME, "shopee-searchbar-input__input").send_keys("yoga pants")
+
+        # driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
+
+        time.sleep(5)
 
 driver.close()  
 print("sample test case successfully completed")  
