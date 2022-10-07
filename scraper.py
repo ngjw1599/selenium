@@ -27,6 +27,13 @@ product_type = {'Fitness Wear': ["Sports Bra", "Yoga Pants"],
                 'Resistance Bands' : ["Fabric Resistance Bands", "Resistance Bands"],
                 'Skipping Rope': ["Skipping Rope"]}
 
+
+# putting the data into a csv format
+# create headers
+column_names = ["Category", "Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "Reviews"]
+#create list 
+list_of_info = []
+
 for main_type in product_type:
     #print(main_type)
     for item in product_type[main_type]:
@@ -37,13 +44,6 @@ for main_type in product_type:
 
         #load
         time.sleep(5)
-
-        # putting the data into a csv format
-        # create headers
-        column_names = ["Category", "Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "Reviews"]
-        #create list 
-        list_of_info = []
-
 
         #click on search
         driver.find_element(By.XPATH, "//header/div[2]/div[1]/div[1]/div[1]/button[1]").click()
@@ -69,9 +69,9 @@ for main_type in product_type:
         driver.maximize_window()
         #item 1-4, div 6-9
         for div_item in range(6,10):
-            item=str(div_item)
+            num_item=str(div_item)
             time.sleep(5)
-            driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + item +"]/a/div/div").click()
+            driver.find_element(By.XPATH, "//*[@id='main']/div/div[2]/div[1]/div/div[2]/div/div[2]/div[" + num_item +"]/a/div/div").click()
 
             # webpage doesnt load all elements, thus need to refresh
             driver.refresh()
@@ -88,6 +88,8 @@ for main_type in product_type:
             time.sleep(5)
             driver.refresh()
             time.sleep(5)
+            driver.refresh()
+            time.sleep(2)
 
             #rating
             rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
