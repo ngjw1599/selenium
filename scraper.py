@@ -93,7 +93,77 @@ for main_type in product_type:
 
             #rating
             rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
-            reviews = driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent")
+
+            #next page:
+            next_page = driver.find_element(By.CLASS_NAME, "shopee-icon-button shopee-icon-button--right") 
+            #xpath: //*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[3]/div[2]/button[11]
+
+            reviews_list = [] 
+            
+            # reviews = driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent")
+
+            maxbefore = 0
+            maxafter = 1
+
+            beforepagelist = []
+            afterpagelist = []
+
+            while maxbefore != maxafter:
+                    # get current page max number
+                    pages = driver.find_elements(By.CLASS_NAME, "shopee-button-no-outline")
+                    for i in pages:
+                            beforepagelist.append(i.text)
+
+                    # find reviews
+                    driver.find_element(By.CLASS_NAME, "shopee-icon-button--right ").click()
+
+                    time.sleep(5)
+
+                    reviews_list.append(driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent"))
+
+                    time.sleep(3)
+
+                    driver.find_element(By.CLASS_NAME, "shopee-icon-button--right ").click()
+
+                    time.sleep(3)
+
+                    reviews_list.append(driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent"))
+
+                    time.sleep(5)
+
+                    next_pages = driver.find_elements(By.CLASS_NAME, "shopee-button-no-outline")
+                    for k in next_pages:
+                            afterpagelist.append(k.text)
+
+                    for i in beforepagelist:
+                            if i.isdigit() != True:
+                                    beforepagelist.remove(i)
+
+                    for i in afterpagelist:
+                            if i.isdigit() != True:
+                                    afterpagelist.remove(i)
+
+                    beforepagelist.pop()
+                    afterpagelist.pop()
+
+                    beforepagelist = [eval(i) for i in beforepagelist]
+                    afterpagelist = [eval(i) for i in afterpagelist]
+
+                    # print(beforepagelist)
+                    # print(afterpagelist)
+
+                    maxbefore = max(beforepagelist)
+                    maxafter = max(afterpagelist)
+
+                    # print (maxbefore)
+                    # print (maxafter)
+
+                    beforepagelist.clear()
+                    afterpagelist.clear()
+
+
+                    
+
 
             #input dictionary
             dict_data = {
