@@ -86,16 +86,20 @@ for main_type in product_type:
             # webpage doesnt load all elements, thus need to refresh
             driver.refresh()
             time.sleep(5)
-            driver.refresh()
+            driver.execute_script("window.scrollTo(0,1000)")
             time.sleep(5)
-            driver.refresh()
-            time.sleep(2)
+            driver.execute_script("window.scrollTo(1000,2000)")
+            time.sleep(8)
 
             #rating
             rating = driver.find_element(By.CLASS_NAME, 'product-rating-overview__rating-score').get_attribute("textContent")
+            
+            # driver refresh
+            driver.execute_script("window.scrollTo(2000,3500)")
+            time.sleep(8)
 
             #next page:
-            next_page = driver.find_element(By.CLASS_NAME, "shopee-icon-button shopee-icon-button--right") 
+            #next_page = driver.find_element(By.CLASS_NAME, "shopee-icon-button shopee-icon-button--right") 
             #xpath: //*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[3]/div[2]/button[11]
 
             reviews_list = [] 
@@ -160,9 +164,6 @@ for main_type in product_type:
 
                     beforepagelist.clear()
                     afterpagelist.clear()
-
-
-                    
 
 
             #input dictionary
