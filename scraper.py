@@ -30,8 +30,8 @@ product_type = {'Fitness Wear': ["Sports Bra", "Yoga Pants"],
 
 # putting the data into a csv format
 # create headers
-column_names = ["Category", "Type", "Title", "Description", "Price", "Sales", "Rating", "Stars", "Reviews"]
-#create list 
+column_names = ["Category", "Type", "Title", "Description", "Price", "Sales", "Reviews"]
+#create list
 list_of_info = []
 
 for main_type in product_type:
@@ -177,20 +177,6 @@ for main_type in product_type:
                         "Rating" : rating,
                         "Reviews" : reviews_list
                         }
-
-
-            #get number of stars
-            #stars
-
-            # stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
-            # dict_stars = {}
-            # for i in range(len(stars)):
-            #     for z in range(1,6):
-            #         #print(stars[i].text)
-            #         dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
-            
-            #get all reviews
-            # need to loop through all pages, currently only able to loop through one post
 
             # add into original list for csv
             list_of_info.append(dict_data)
