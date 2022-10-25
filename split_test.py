@@ -14,7 +14,7 @@ import re
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
 #insert website here
-driver.get("https://shopee.sg/GOTO-Plus-Size-Women-Shockproof-Breathable-Wireless-Push-up-Vest-Bra-Sport-Underwear-i.129916519.2650549186?sp_atk=cccfb955-e290-4076-95b9-a82baf485455&xptdk=cccfb955-e290-4076-95b9-a82baf485455")
+driver.get("https://shopee.sg/Women-Seamless-Racerback-Sports-Bra-Yoga-Fitness-Padded-women's-sports-underwear-workout-bra-i.9493048.67812951?sp_atk=a7047cef-cddf-4726-aaeb-80c47d9fe4f7&xptdk=a7047cef-cddf-4726-aaeb-80c47d9fe4f7")
 
 time.sleep(5)
 
@@ -153,7 +153,7 @@ list_of_info.append(dict_data)
 
 #convert into csv, replaces the old one
 #rename csv file
-with open('sportsbra3_scraping.csv', 'w', encoding='UTF8', newline='') as convert:
+with open('sportsbra1_scraping.csv', 'w', encoding='UTF8', newline='') as convert:
     dw = csv.DictWriter(convert, delimiter=',', fieldnames=column_names)
     dw.writeheader()
     for info in list_of_info:
