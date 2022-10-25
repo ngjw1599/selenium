@@ -174,7 +174,7 @@ for main_type in product_type:
                         "Price": price,
                         "Sales": sales_to_value(sales), 
                         "Rating" : rating,
-                        "Reviews" : reviews
+                        "Reviews" : reviews_list
                         }
 
 
