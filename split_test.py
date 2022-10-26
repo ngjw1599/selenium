@@ -14,7 +14,7 @@ import re
 driver = webdriver.Chrome(ChromeDriverManager().install())
 
 #insert website here
-driver.get("https://shopee.sg/SG-Ready-Stock-Resistance-Bands-3-pcs-2meter-long-Fabric-Workout-Bands-with-3-Resistance-Levels-Exercise-Fitness-i.565042360.20304468721?sp_atk=2cd9ca89-b96b-4cca-bb3c-16028ee8f392&xptdk=2cd9ca89-b96b-4cca-bb3c-16028ee8f392")
+driver.get("https://shopee.sg/-%E2%9C%85LOCAL-Resistance-Bands-Set-Long-Exercise-Bands-Latex-Resistance-Bands-Long-Tension-Fitness-Belt-Strong-Stretch-Band-i.236813629.3138591774?sp_atk=fb08608f-2141-4bbc-944b-26dc689a81b9&xptdk=fb08608f-2141-4bbc-944b-26dc689a81b9")
 
 time.sleep(5)
 
@@ -153,7 +153,7 @@ list_of_info.append(dict_data)
 
 #convert into csv, replaces the old one
 #rename csv file
-with open('resbands3_scraping.csv', 'w', encoding='UTF8', newline='') as convert:
+with open('resbands4_scraping.csv', 'w', encoding='UTF8', newline='') as convert:
     dw = csv.DictWriter(convert, delimiter=',', fieldnames=column_names)
     dw.writeheader()
     for info in list_of_info:
