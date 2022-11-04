@@ -164,4 +164,4 @@ with open('resbands4_scraping.csv', 'w', encoding='UTF8', newline='') as convert
 driver.close()
 
 #print message once output is done
-print("test case done successfully")
+print("case done successfully")
