@@ -134,20 +134,6 @@ dict_data = {
             "Reviews" : reviews_list
             }
 
-
-            #get number of stars
-            #stars
-
-            # stars = driver.find_elements(By.XPATH, "//div[@class='product-rating-overview__filter']")
-            # dict_stars = {}
-            # for i in range(len(stars)):
-            #     for z in range(1,6):
-            #         #print(stars[i].text)
-            #         dict_stars["{0} Stars".format(z)] = re.findall('\(.*?\)', (stars[i].text)[0])
-            
-            #get all reviews
-            # need to loop through all pages, currently only able to loop through one post
-
             # add into original list for csv
 list_of_info.append(dict_data)
 

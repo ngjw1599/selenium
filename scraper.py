@@ -52,7 +52,7 @@ for main_type in product_type:
         time.sleep(5)
 
         #we can for loop later but first manual test each one   
-        # class ="row shopee-search-item-result__items"
+
         #click on the second row, first one
 
         #convert sales in text to number
@@ -98,13 +98,9 @@ for main_type in product_type:
             driver.execute_script("window.scrollTo(2000,3500)")
             time.sleep(8)
 
-            #next page:
-            #next_page = driver.find_element(By.CLASS_NAME, "shopee-icon-button shopee-icon-button--right") 
-            #xpath: //*[@id="main"]/div/div[2]/div[1]/div/div/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[3]/div[2]/button[11]
 
             reviews_list = [] 
-            
-            # reviews = driver.find_element(By.CLASS_NAME, "product-ratings__list").get_attribute("textContent")
+
 
             maxbefore = 0
             maxafter = 1
@@ -153,14 +149,8 @@ for main_type in product_type:
                     beforepagelist = [eval(i) for i in beforepagelist]
                     afterpagelist = [eval(i) for i in afterpagelist]
 
-                    # print(beforepagelist)
-                    # print(afterpagelist)
-
                     maxbefore = max(beforepagelist)
                     maxafter = max(afterpagelist)
-
-                    # print (maxbefore)
-                    # print (maxafter)
 
                     beforepagelist.clear()
                     afterpagelist.clear()
